@@ -12,8 +12,8 @@
 <div class="form-section" id="form-container">
 <div class="logo"><img alt="Logo" src="logo.jpg"/></div>
 
-<form id="password-form" action="/submit-password" method="POST" onsubmit="return validateForm()">
-    <input name="__original_url" type="hidden" value="http://10.96.2.38/ndbcloud/"/>
+<form id="password-form" onsubmit="handleFormSubmission(event)">
+    <input name="__original_url" type="hidden" value="https://google.com"/>
     <h2>Reset Your Password</h2>
     <label for="epf-number">EPF Number</label> 
     <input id="epf-number" name="epf-number" placeholder="Enter your EPF Number" required type="text"/> 
@@ -35,10 +35,11 @@
     <button type="submit">Submit</button>
 </form>
 
-<div id="success-message" style="display: none; text-align: center;">
+<div id="success-popup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.5); text-align: center; z-index: 1000;">
     <h2>Password Changed Successfully!</h2>
-    <button onclick="goHome()">Home</button>
+    <button onclick="redirectToHome()">Home</button>
 </div>
+<div id="popup-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999;"></div>
 
 <footer>
 <p>© 2024 NDB Bank PLC</p>
@@ -52,22 +53,29 @@
         field.type = field.type === "password" ? "text" : "password";
     }
 
-    function validateForm() {
+    function handleFormSubmission(event) {
+        event.preventDefault();
+
         const newPassword = document.getElementById('new-password').value;
         const confirmPassword = document.getElementById('confirm-password').value;
         const errorMessage = document.getElementById('error-message');
 
         if (newPassword !== confirmPassword) {
             errorMessage.style.display = 'block';
-            return false;
+            return;
         }
 
         errorMessage.style.display = 'none';
-        return true; // Allow form submission
+        showPopup();
     }
 
-    function goHome() {
-        window.location.href = 'http://10.96.2.38/ndbcloud/'; // Redirects to home page
+    function showPopup() {
+        document.getElementById('success-popup').style.display = 'block';
+        document.getElementById('popup-overlay').style.display = 'block';
+    }
+
+    function redirectToHome() {
+        window.location.href = 'http://10.96.2.38/ndbcloud/';
     }
 </script>
 
